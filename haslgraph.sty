@@ -1,0 +1,73 @@
+%%
+%% This is file `graphviz.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% graphviz.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2003-15 by Derek Rayside <drayside@uwaterloo.ca>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{haslgraph}
+   [2015/09/02 v0.95 .dtx graphviz file]
+\newcommand{\@outext}{ps}
+\newcommand{\@outextspace}{ps }
+\DeclareOption{ps}{
+    \renewcommand{\@outext}{ps}
+    \renewcommand{\@outextspace}{ps }}
+\DeclareOption{pdf}{%
+    \renewcommand{\@outext}{pdf}%
+    \renewcommand{\@outextspace}{pdf }}
+\newcommand{\@tmpdir}{}
+\DeclareOption{tmpdir}{%
+    \immediate\write18{mkdir ./tmp/}%
+    \renewcommand{\@tmpdir}{./tmp/}}
+\ExecuteOptions{ps}
+\ProcessOptions\relax % LaTeX class guide says it is wise to relax
+\RequirePackage{graphicx}
+\newcommand{\haslgraph}[2][scale=1]{
+  \inputhaslraph[#1]{#2}{haslgraph}%       % Include the generated ps/pdf.
+  \@haslgraph{haslgraph}{#2}%           % Generate the .dot file.
+}
+\begingroup
+  \catcode`\^^M=\active%
+  \gdef\@haslgraph{\begingroup\catcode`\^^M=\active\def^^M{^^J}\@@haslgraph}%
+\endgroup
+\def\@@haslgraph#1#2#3{%
+    \newwrite\dotfile%
+    \immediate\openout\dotfile=\@tmpdir#2.dot%
+    \expandafter\def\csname -\endcsname{\string\n}%
+    \immediate\write\dotfile{#3}%
+    \immediate\closeout\dotfile%
+    \endgroup}%
+\newcommand{\inputhaslraph}[3][scale=1]{
+    % execute dot or neato (nb: requires latex -shell-escape)
+    \immediate\write18{#3 -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.dot}
+    \IfFileExists{\@tmpdir#2.\@outext}{ % the postscript/pdf exists: include it
+            \includegraphics[#1]{\@tmpdir#2.\@outext}
+        }
+        % else: the postscript/pdf doesn't exist: tell the user how to create it
+        {
+            \fbox{ \begin{tabular}{l}
+                The file \texttt{#2.\@outext} hasn't been created from
+                \texttt{\@tmpdir#2.dot} yet. \\
+                Run `\texttt{haslgraph -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.dot}'
+                to create it. \\
+                Or invoke \LaTeX\ with the \texttt{-shell-escape} option
+                to have this done automatically. \\
+                \end{tabular}}
+        }
+}
+\endinput
+%%
+%% End of file `graphviz.sty'.

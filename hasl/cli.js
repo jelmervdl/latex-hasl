@@ -27,6 +27,23 @@ Graph.prototype.parse = function (input)
 
     let rules = [
         {
+            pattern: /^\s*([a-z]+)\s*:\s*(?:(assume)\s+)?((?:[a-z]+\s+)+)(?:(support|attack)s)\s+([a-z]+)\s+because\s+(?:(assume)\s+)?(.+?)\s*$/,
+            processor: match => {
+                let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {
+                    if (!(name in this.variables))
+                        throw new Error('Variable "' + name + '" is unknown');
+                    return this.variables[name];
+                });
+                let target = this.variables[match[5]];
+                let relation = this.addRelation(sources, target, match[4], {variable: match[1], assumption: match[2] == 'assume'});
+
+                let major = this.addClaim(match[7], {variable: match[1], assumption: match[6] == 'assume'});
+                this.addRelation([major], relation, 'major', {assumption: match[6] == 'assume'});
+
+                this.variables[match[1]] = major;
+            }
+        },
+        {
             pattern: /^\s*([a-z]+)\s*:\s*(?:(assume)\s+)?((?:[a-z]+\s+)+)(?:(support|attack)s)\s+([a-z]+)$/,
             processor: match => {
                 let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {

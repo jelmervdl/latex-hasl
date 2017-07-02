@@ -1,0 +1,49 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[pdf,tmpdir]{haslgraph}
+
+\begin{document}
+
+\title{HASL argument diagrams}
+\author{Jelmer van der Linde}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+\begin{figure}
+	\haslgraph[width=0.5\textwidth]{argJohn}{
+		a: John is a doctor
+		b: John graduated
+		c: John finished his thesis
+		d: b supports a
+		e: c supports b
+	}
+	\caption{Argument diagram for sentence with shared claim/minor.}
+	\label{fig:argJohn}
+\end{figure}
+
+\begin{figure}
+	\haslgraph[width=0.5\textwidth]{argtcanfb}{
+		a: Tweety can fly
+		b: She is a bird
+		c: b supports a because assume Birds can fly
+	}
+	\caption{Argument diagram for sentence with implicit major.}
+	\label{fig:argTcanFB}
+\end{figure}
+
+\begin{figure}
+	\haslgraph[width=0.5\textwidth]{argBirds}{
+		a: Tweety can fly
+		b: Tweety is a bird
+		d: b supports a because birds can fly
+		c: Birds have wings
+		e: c supports d
+	}
+	\caption{Argument diagram for sentence with supported major.}
+	\label{fig:argBirds}
+\end{figure}
+
+\end{document}

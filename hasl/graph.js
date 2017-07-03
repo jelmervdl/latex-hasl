@@ -1,4 +1,4 @@
-var requestAnimationFrame = (function() {
+var _requestAnimationFrame = (function() {
 	if (typeof window !== 'undefined' && 'requestAnimationFrame' in window)
 		return function(callback) {
 			window.requestAnimationFrame(callback);
@@ -501,7 +501,7 @@ Graph.prototype = {
 	},
 
 	resize: function() {
-		requestAnimationFrame(() => {
+		_requestAnimationFrame(() => {
 			this.updateCanvasSize();
 			this.draw();
 		});
@@ -570,7 +570,7 @@ Graph.prototype = {
 	},
 
 	update: function() {
-		requestAnimationFrame(this.draw.bind(this));
+		_requestAnimationFrame(this.draw.bind(this));
 	},
 
 	draw: function() {

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			html, body, #canvas {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<script src="../hasl/array.js"></script>
+		<script src="../hasl/canvas.js"></script>
+		<script src="../hasl/graph.js"></script>
+		<script src="../hasl/layout.js"></script>
+		<script>
+		(function() {
+			let canvas = document.getElementById('canvas');
+			let graph = new Graph(canvas);
+
+			let dead = graph.addClaim('Socrates is dead');
+			let alive = graph.addClaim('Socrates is alive');
+
+			let dead_alive = graph.addRelation([dead], alive, 'attack');
+			let alive_dead = graph.addRelation([alive], dead, 'attack');
+
+			graph.layout().apply();
+		})();
+		</script>
+	</body>
+</html>

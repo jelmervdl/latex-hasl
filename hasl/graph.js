@@ -282,6 +282,9 @@ Graph.prototype = {
 	},
 
 	findRootClaims: function() {
+		if (this.claims.length == 0)
+			return [];
+		
 		// Find all claims that are the source for a relation
 		const sources = this.relations.map(relation => relation.claim);
 
@@ -290,7 +293,11 @@ Graph.prototype = {
 
 		// and we should be left with the roots
 		// (which are only attacked or supported, or neither)
-		return roots;
+		if (roots.length > 0)
+			return roots;
+
+		// Oh crap, only circular claims. Great! Let's just take the first one added.
+		return [this.claims[0]];
 	},
 
 	findRelations: function(criteria) {

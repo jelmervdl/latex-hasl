@@ -3,7 +3,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 TESTDIR="${DIR}/test"
 
-BUILD=$(docker build -q ${DIR})
+BUILD=$(docker build -q -t jelmervdl/latexmk ${DIR})
 
 echo $BUILD
 

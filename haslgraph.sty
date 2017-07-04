@@ -43,16 +43,16 @@
   \catcode`\^^M=\active%
   \gdef\@haslgraph{\begingroup\catcode`\^^M=\active\def^^M{^^J}\@@haslgraph}%
 \endgroup
+\newwrite\haslfile%
 \def\@@haslgraph#1#2#3{%
-    \newwrite\dotfile%
-    \immediate\openout\dotfile=\@tmpdir#2.dot%
+    \immediate\openout\haslfile=\@tmpdir#2.hasl%
     \expandafter\def\csname -\endcsname{\string\n}%
-    \immediate\write\dotfile{#3}%
-    \immediate\closeout\dotfile%
+    \immediate\write\haslfile{#3}%
+    \immediate\closeout\haslfile%
     \endgroup}%
 \newcommand{\inputhaslraph}[3][scale=1]{
     % execute dot or neato (nb: requires latex -shell-escape)
-    \immediate\write18{#3 -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.dot}
+    \immediate\write18{#3 -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.hasl}
     \IfFileExists{\@tmpdir#2.\@outext}{ % the postscript/pdf exists: include it
             \includegraphics[#1]{\@tmpdir#2.\@outext}
         }
@@ -60,8 +60,8 @@
         {
             \fbox{ \begin{tabular}{l}
                 The file \texttt{#2.\@outext} hasn't been created from
-                \texttt{\@tmpdir#2.dot} yet. \\
-                Run `\texttt{haslgraph -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.dot}'
+                \texttt{\@tmpdir#2.hasl} yet. \\
+                Run `\texttt{haslgraph -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.hasl}'
                 to create it. \\
                 Or invoke \LaTeX\ with the \texttt{-shell-escape} option
                 to have this done automatically. \\

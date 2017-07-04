@@ -9,5 +9,5 @@ echo $BUILD
 
 rm -f "${TESTDIR}/test.pdf"
 
-docker run -v "${TESTDIR}":/target "$BUILD" --enable-write18 ./test.tex \
+docker run -v "${TESTDIR}":/target "$BUILD" ./test.tex \
 	&& open "${TESTDIR}/test.pdf"

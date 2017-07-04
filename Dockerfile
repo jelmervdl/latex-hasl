@@ -31,4 +31,7 @@ RUN /bin/mkdir -pv /root/texmf/tex/latex
 
 COPY haslgraph.sty /root/texmf/tex/latex/
 
+COPY entrypoint.sh /usr/bin/local/
+RUN /bin/chmod +x /usr/bin/local/entrypoint.sh
+
 ENTRYPOINT ["/usr/bin/local/entrypoint.sh"]

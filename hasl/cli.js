@@ -18,6 +18,10 @@ require('./array.js');
 require('./layout.js')(Graph);
 require('./canvas.js')(Canvas.Context2d);
 
+console.log = function() {
+    // noop
+};
+
 Graph.prototype.parse = function (input)
 {
     if (!this.variables)

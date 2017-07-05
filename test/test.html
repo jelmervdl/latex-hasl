@@ -2,31 +2,54 @@
 <html>
 	<head>
 		<style>
-			html, body, #canvas {
+			html, body {
 				margin: 0;
 				padding: 0;
+			}
+
+			canvas {
+				margin: 10px;
+				border: 1px solid black;
 			}
 		</style>
 	</head>
 	<body>
-		<canvas id="canvas"></canvas>
 		<script src="../hasl/array.js"></script>
 		<script src="../hasl/canvas.js"></script>
 		<script src="../hasl/graph.js"></script>
 		<script src="../hasl/layout.js"></script>
 		<script>
-		(function() {
-			let canvas = document.getElementById('canvas');
+		let examples = [
+			graph => {
+				let dead = graph.addClaim('Socrates is dead');
+				let alive = graph.addClaim('Socrates is alive');
+
+				let dead_alive = graph.addRelation([dead], alive, 'attack');
+				let alive_dead = graph.addRelation([alive], dead, 'attack');
+			},
+			graph => {
+				let claim = graph.addClaim('Claim');
+				let datum = graph.addClaim('Datum');
+				let warrant = graph.addClaim('Warrant');
+				let backing = graph.addClaim('Backing');
+				let rebuttal = graph.addClaim('Rebuttal');
+
+				let datum_claim = graph.addRelation([datum], claim, 'support');
+				let warrant_datum_claim = graph.addRelation([warrant], datum_claim, 'warrant');
+				let backing_warrant = graph.addRelation([backing], warrant, 'support');
+				let rebuttal_claim = graph.addRelation([rebuttal], claim, 'attack');
+			}
+		];
+
+		examples.forEach(example => {
+			let canvas = document.createElement('canvas');
+			document.body.appendChild(canvas);
+
 			let graph = new Graph(canvas);
-
-			let dead = graph.addClaim('Socrates is dead');
-			let alive = graph.addClaim('Socrates is alive');
-
-			let dead_alive = graph.addRelation([dead], alive, 'attack');
-			let alive_dead = graph.addRelation([alive], dead, 'attack');
+			example(graph);
 
 			graph.layout().apply();
-		})();
+		});
 		</script>
 	</body>
 </html>

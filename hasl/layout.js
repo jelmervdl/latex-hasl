@@ -9,6 +9,8 @@ Graph.prototype.layout = function()
 	var visited = [];
 
 	function layoutClaim(claim) {
+		console.log('layoutClaim', claim);
+
 		let incoming = graph.findRelations({target: claim});
 
 		let layout = new Layout(Layout.VERTICAL);
@@ -26,6 +28,8 @@ Graph.prototype.layout = function()
 	}
 
 	function layoutRelation(relation) {
+		console.log('layoutRelation', relation);
+
 		var layout = new Layout(Layout.VERTICAL);
 
 		let incoming = graph.findRelations({target: relation});
@@ -54,6 +58,8 @@ Graph.prototype.layout = function()
 	// Find all claims that have no outgoing relations, and that thus wouldn't be found
 	// by iterating all relations as done by layoutClaim.
 	var roots = this.findRootClaims();
+
+	console.log('roots', roots);
 	
 	var layout = new Layout(Layout.HORIZONTAL);
 

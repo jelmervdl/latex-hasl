@@ -7,9 +7,22 @@
 				padding: 0;
 			}
 
-			canvas {
+			body {
+				display: flex;
+			}
+
+			figure {
 				margin: 10px;
-				border: 1px solid black;
+				padding: 0;
+			}
+
+			figure pre {
+				padding: 10px;
+				background: #eee;
+			}
+
+			figure canvas {
+				border: 1px solid silver;
 			}
 		</style>
 	</head>
@@ -19,36 +32,83 @@
 		<script src="../hasl/graph.js"></script>
 		<script src="../hasl/layout.js"></script>
 		<script>
-		let examples = [
+		const examples = [
 			graph => {
-				let dead = graph.addClaim('Socrates is dead');
-				let alive = graph.addClaim('Socrates is alive');
-
-				let dead_alive = graph.addRelation([dead], alive, 'attack');
-				let alive_dead = graph.addRelation([alive], dead, 'attack');
+				const claim = graph.addClaim('Claim');
+				const datum = graph.addClaim('Datum');
+				graph.addRelation([datum], claim, 'support');
 			},
 			graph => {
-				let claim = graph.addClaim('Claim');
-				let datum = graph.addClaim('Datum');
-				let warrant = graph.addClaim('Warrant');
-				let backing = graph.addClaim('Backing');
-				let rebuttal = graph.addClaim('Rebuttal');
-
-				let datum_claim = graph.addRelation([datum], claim, 'support');
-				let warrant_datum_claim = graph.addRelation([warrant], datum_claim, 'warrant');
-				let backing_warrant = graph.addRelation([backing], warrant, 'support');
-				let rebuttal_claim = graph.addRelation([rebuttal], claim, 'attack');
+				const claim = graph.addClaim('Claim');
+				const datum_1 = graph.addClaim('Datum 1');
+				const datum_2 = graph.addClaim('Datum 2');
+				graph.addRelation([datum_1], claim, 'support');
+				graph.addRelation([datum_2], claim, 'support');
+			},
+			graph => {
+				const claim = graph.addClaim('Claim');
+				const datum_1 = graph.addClaim('Datum 1');
+				const datum_2 = graph.addClaim('Datum 2');
+				graph.addRelation([datum_1, datum_2], claim, 'support');
+			},
+			graph => {
+				const dead = graph.addClaim('Socrates is dead');
+				const alive = graph.addClaim('Socrates is alive');
+				graph.addRelation([dead], alive, 'attack');
+				graph.addRelation([alive], dead, 'attack');
+			},
+			graph => {
+				const claim = graph.addClaim('Claim');
+				const datum_1 = graph.addClaim('Datum 1');
+				const datum_2 = graph.addClaim('Datum 2');
+				const datum_3 = graph.addClaim('Datum 3');
+				const datum_4 = graph.addClaim('Datum 4');
+				graph.addRelation([datum_1], claim, 'support');
+				graph.addRelation([datum_2], claim, 'support');
+				graph.addRelation([datum_3], datum_1, 'support');
+				graph.addRelation([datum_4], datum_1, 'support');
+			},
+			graph => {
+				const claim = graph.addClaim('Claim');
+				const datum_1 = graph.addClaim('Datum 1');
+				const datum_2 = graph.addClaim('Datum 2');
+				const datum_3 = graph.addClaim('Datum 3');
+				const datum_4 = graph.addClaim('Datum 4');
+				graph.addRelation([datum_1, datum_2], claim, 'support');
+				graph.addRelation([datum_3, datum_4], datum_1, 'support');
+			},
+			graph => {
+				const claim = graph.addClaim('Claim');
+				const datum = graph.addClaim('Datum');
+				const warrant = graph.addClaim('Warrant');
+				const backing = graph.addClaim('Backing');
+				const rebuttal = graph.addClaim('Rebuttal');
+				const datum_claim = graph.addRelation([datum], claim, 'support');
+				const warrant_datum_claim = graph.addRelation([warrant], datum_claim, 'warrant');
+				const backing_warrant = graph.addRelation([backing], warrant, 'support');
+				const rebuttal_claim = graph.addRelation([rebuttal], claim, 'attack');
 			}
 		];
 
 		examples.forEach(example => {
-			let canvas = document.createElement('canvas');
-			document.body.appendChild(canvas);
+			const figure = document.createElement('figure');
+			document.body.appendChild(figure);
 
-			let graph = new Graph(canvas);
+			const canvas = document.createElement('canvas');
+			figure.appendChild(canvas);
+
+			const caption = document.createElement('pre');
+			figure.appendChild(caption);
+
+			const graph = new Graph(canvas);
 			example(graph);
 
-			graph.layout().apply();
+			caption.textContent = graph.toString();
+
+			const layout = graph.layout();
+			layout.apply();
+
+			graph.on('draw', (graph) => layout.drawOutline(graph));
 		});
 		</script>
 	</body>

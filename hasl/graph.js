@@ -602,11 +602,11 @@ Graph.prototype = {
 		this.drawClaims();
 
 		this.drawSelection();
-
+		
+		this.fire('draw');
+		
 		// Undo the translation
 		this.context.setTransform(1, 0, 0, 1, 0, 0);
-
-		this.fire('draw');
 	},
 
 	drawClaims: function()

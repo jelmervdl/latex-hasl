@@ -87,6 +87,25 @@
 				const warrant_datum_claim = graph.addRelation([warrant], datum_claim, 'warrant');
 				const backing_warrant = graph.addRelation([backing], warrant, 'support');
 				const rebuttal_claim = graph.addRelation([rebuttal], claim, 'attack');
+			},
+			graph => {
+				const a = graph.addClaim('Something can fly if something is a bird and something can not fly');
+				const b = graph.addClaim('Something can not fly');
+				const c = graph.addClaim('A penguin can not fly');
+				const d = graph.addClaim('Tweety is a penguin');
+				const e = graph.addClaim('Tweety can not fly');
+				const f = graph.addClaim('Tweety is a bird');
+				const g = graph.addClaim('Tweety can fly');
+				const h = graph.addRelation([f, e], g, 'support');
+				const i = graph.addRelation([b], a, 'attack');
+				const j = graph.addRelation([d], e, 'support');
+				const k = graph.addRelation([a], b, 'attack');
+				const l = graph.addRelation([b], a, 'attack');
+				const m = graph.addRelation([a], b, 'attack');
+				const n = graph.addRelation([e], g, 'attack');
+				const o = graph.addRelation([g], e, 'attack');
+				const p = graph.addRelation([a], h, 'support');
+				const q = graph.addRelation([c], j, 'support');
 			}
 		];
 

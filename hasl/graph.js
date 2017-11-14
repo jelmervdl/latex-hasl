@@ -576,9 +576,14 @@ Graph.prototype = {
 
 		this.claims.forEach(claim => {
 			if (claim.width === null || claim.height === null) {
-				let textWidth = claim.text.map(line => this.context.measureText(line).width).max();
-				claim.width = textWidth / this.style.scale + 2 * this.style.claim.padding;
-				claim.height = claim.text.length * this.style.claim.lineHeight + 2 * this.style.claim.padding;
+				if (claim.data.compound) {
+					claim.width = 0;
+					claim.height = 0;
+				} else {
+					let textWidth = claim.text.map(line => this.context.measureText(line).width).max();
+					claim.width = textWidth / this.style.scale + 2 * this.style.claim.padding;
+					claim.height = claim.text.length * this.style.claim.lineHeight + 2 * this.style.claim.padding;
+				}
 			}
 		});
 	},
@@ -633,6 +638,9 @@ Graph.prototype = {
 
 		// Draw all claims
 		this.claims.forEach(claim => {
+			if (claim.data.compound)
+				return;
+
 			// Draw the background
 			ctx.fillStyle = claimColor(claim);
 			ctx.fillRect(
@@ -788,6 +796,9 @@ Graph.prototype = {
 
 		const source = center(sourceBox);
 		const target = center(targetBox);
+
+		if (target.width === 0 || target.height === 0)
+			return {x: target.x, y: target.y};
 
 		const D = {
 			x: source.x - target.x,

@@ -63,14 +63,33 @@
 	\haslgraph[width=\textwidth]{argtoulmin}{
 		a: Claim
 		b: Datum
-		c: b supports a because Warrant
+		w: Warrant
+		c: b supports a
+		h: w supports c
 		d: Backing
-		e: d supports c
+		e: d supports w
 		f: Rebuttal
-		g: f attacks a
+		g: f attacks h
 	}
 	\caption{Toulmin's model.}
 	\label{fig:argtoulmin}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\haslgraph[width=\textwidth]{rules}{
+		a: Tweety is a bird
+		b: Tweety can fly
+		c: Birds can fly
+		d: It is a bird
+		e: It is a penguin
+		1: a supports b
+		2: c supports 1
+		3: d warrants c
+		4: e undercuts 3
+	}
+	\caption{Explicit rules}
+	\label{fig:argrules}
 \end{figure}
 
 \end{document}

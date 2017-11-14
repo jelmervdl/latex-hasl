@@ -31,7 +31,7 @@ Graph.prototype.parse = function (input)
 
     let rules = [
         {
-            pattern: /^\s*([a-z]+)\s*:\s*(?:(assume)\s+)?((?:[a-z]+\s+)+)(?:(support|attack)s)\s+([a-z]+)\s+because\s+(?:(assume)\s+)?(.+?)\s*$/,
+            pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?((?:[a-z0-9]+\s+)+)(?:(support|attack)s)\s+([a-z0-9]+)\s+because\s+(?:(assume)\s+)?(.+?)\s*$/,
             processor: match => {
                 let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {
                     if (!(name in this.variables))
@@ -48,7 +48,7 @@ Graph.prototype.parse = function (input)
             }
         },
         {
-            pattern: /^\s*([a-z]+)\s*:\s*(?:(assume)\s+)?((?:[a-z]+\s+)+)(?:(support|attack)s)\s+([a-z]+)$/,
+            pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?((?:[a-z0-9]+\s+)+)(?:(support|attack|warrant|undercut)s)\s+([a-z0-9]+)$/,
             processor: match => {
                 let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {
                     if (!(name in this.variables))
@@ -61,7 +61,7 @@ Graph.prototype.parse = function (input)
             }
         },
         {
-            pattern: /^\s*([a-z]+)\s*:\s*(?:(assume)\s+)?(.+?)\s*$/,
+            pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?(.+?)\s*$/,
             processor: match => {
                 this.variables[match[1]] = this.addClaim(match[3], {variable: match[1], assumption: match[2] == 'assume'});
             }

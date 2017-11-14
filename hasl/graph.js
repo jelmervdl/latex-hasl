@@ -73,6 +73,10 @@ Relation.SUPPORT = 'support';
 
 Relation.ATTACK = 'attack';
 
+Relation.CONDITION = 'warrant';
+
+Relation.EXCEPTION = 'undercut';
+
 Relation.prototype = {
 	delete: function() {
 		// Delete the relation from the graph
@@ -221,6 +225,9 @@ function Graph(canvas)
 			size: 5,
 			color: function(relation) {
 				return relation.data.assumption ? '#ccc' : 'black';
+			},
+			dash: function(relation) {
+				return relation.type === Relation.CONDITION || relation.type === Relation.EXCEPTION ? [5, 5] : [];
 			}
 		}
 	};
@@ -681,6 +688,7 @@ Graph.prototype = {
 		var ctx = this.context,
 			scale = this.style.scale,
 			relationColor = this.style.relation.color,
+			relationDash = this.style.relation.dash,
 			arrowRadius = this.style.relation.size;
 
 		// Draw all the relation arrows
@@ -700,7 +708,7 @@ Graph.prototype = {
 			ctx.moveTo(scale * s.x, scale * s.y);
 
 			ctx.strokeStyle = relationColor(relation);
-
+			
 			// To almost the target (but a bit less)
 			var angle = Math.atan2(
 				t.y - s.y,
@@ -708,28 +716,45 @@ Graph.prototype = {
 
 			switch (relation.type) {
 				case Relation.SUPPORT:
+				case Relation.CONDITION:
+					ctx.setLineDash(relationDash(relation));
 					ctx.lineTo(
 						scale * t.x - scale * arrowRadius * Math.cos(angle),
 						scale * t.y - scale * arrowRadius * Math.sin(angle));
 					ctx.stroke();
-
-					ctx.lineWidth = scale * 2;
+					ctx.setLineDash([]);
+					
+					if (relation.type === Relation.SUPPORT)
+						ctx.lineWidth = scale * 2;
+					else
+						ctx.lineWidth = scale * 1;
 					
 					ctx.arrow(scale * arrowRadius, 
 						scale * s.x,
 						scale * s.y,
 						scale * t.x,
 						scale * t.y);
-					ctx.fill();
+
+					if (relation.type === Relation.SUPPORT)
+						ctx.fill();
+					else
+						ctx.stroke();
+
 					break;
 
 				case Relation.ATTACK:
+				case Relation.EXCEPTION:
+					ctx.setLineDash(relationDash(relation));
 					ctx.lineTo(
 						scale * t.x - scale * arrowRadius * Math.cos(angle),
 						scale * t.y - scale * arrowRadius * Math.sin(angle));
 					ctx.stroke();
+					ctx.setLineDash([]);
 
-					ctx.lineWidth = scale * 2;
+					if (relation.type === Relation.ATTACK)
+						ctx.lineWidth = scale * 2;
+					else
+						ctx.lineWidth = scale * 1;
 
 					ctx.cross(0.75 * scale * arrowRadius, 
 						scale * s.x,
@@ -740,10 +765,12 @@ Graph.prototype = {
 					break;
 
 				default:
+					ctx.setLineDash(relationDash(relation));
 					ctx.lineTo(
 						scale * t.x,
 						scale * t.y);
 					ctx.stroke();
+					ctx.setLineDash([]);
 					break;
 			}
 		});

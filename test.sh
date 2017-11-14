@@ -7,6 +7,7 @@ BUILD=$(docker build -q -t jelmervdl/latexmk ${DIR})
 
 echo $BUILD
 
+rm -f "${TESTDIR}/tmp/*.{pdf,hasl}"
 rm -f "${TESTDIR}/test.pdf"
 
 docker run -v "${TESTDIR}":/target "$BUILD" ./test.tex \

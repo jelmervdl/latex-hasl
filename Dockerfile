@@ -12,8 +12,8 @@ RUN /bin/dnf install -y \
 	pangomm-devel \
 	giflib-devel \
 	nodejs\
-	npm && \
-	/bin/dnf clean all
+	npm \
+	&& /bin/dnf clean all
 
 RUN /bin/mkdir -pv /opt/hasl
 
@@ -21,6 +21,11 @@ RUN /bin/dnf install -y gcc-c++ python \
 	&& cd /opt/hasl \
 	&& /usr/bin/npm install canvas \
 	&& /bin/dnf erase -y gcc-c++ python
+
+RUN /bin/dnf install -y \
+	texlive-tikz-qtree \
+	texlive-pict2e \
+	&& /bin/dnf clean all
 
 COPY hasl/*.js /opt/hasl/
 

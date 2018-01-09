@@ -93,7 +93,7 @@ function main(input, output) {
     });
 
     rl.on('line', input => {
-        graph.parse(input);
+        graph.parse(input.replace(/##/, '#'));
     });
 
     rl.on('close', () => {

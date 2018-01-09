@@ -30,7 +30,7 @@
     \renewcommand{\@outextspace}{pdf }}
 \newcommand{\@tmpdir}{}
 \DeclareOption{tmpdir}{%
-    \immediate\write18{mkdir ./tmp/}%
+    \immediate\write18{mkdir -p ./tmp/}%
     \renewcommand{\@tmpdir}{./tmp/}}
 \ExecuteOptions{ps}
 \ProcessOptions\relax % LaTeX class guide says it is wise to relax

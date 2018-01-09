@@ -22,67 +22,6 @@ console.log = function() {
     // noop
 };
 
-Graph.prototype.parse = function (input)
-{
-    if (!this.variables)
-        this.variables = {};
-
-    let lines = input.split(/\r?\n/);
-
-    let rules = [
-        {
-            pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?((?:[a-z0-9]+\s+)+)(?:(support|attack)s)\s+([a-z0-9]+)\s+because\s+(?:(assume)\s+)?(.+?)\s*$/,
-            processor: match => {
-                let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {
-                    if (!(name in this.variables))
-                        throw new Error('Variable "' + name + '" is unknown');
-                    return this.variables[name];
-                });
-                let target = this.variables[match[5]];
-                let relation = this.addRelation(sources, target, match[4], {variable: match[1], assumption: match[2] == 'assume'});
-
-                let major = this.addClaim(match[7], {variable: match[1], assumption: match[6] == 'assume'});
-                this.addRelation([major], relation, 'major', {assumption: match[6] == 'assume'});
-
-                this.variables[match[1]] = major;
-            }
-        },
-        {
-            pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?((?:[a-z0-9]+\s+)+)(?:(support|attack|warrant|undercut)s)\s+([a-z0-9]+)$/,
-            processor: match => {
-                let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {
-                    if (!(name in this.variables))
-                        throw new Error('Variable "' + name + '" is unknown');
-                    return this.variables[name];
-                });
-                let target = this.variables[match[5]];
-                let relation = this.addRelation(sources, target, match[4], {variable: match[1], assumption: match[2] == 'assume'});
-                this.variables[match[1]] = relation;
-            }
-        },
-        {
-            pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?(.+?)\s*$/,
-            processor: match => {
-                this.variables[match[1]] = this.addClaim(match[3], {variable: match[1], assumption: match[2] == 'assume'});
-            }
-        }
-    ];
-
-    lines.forEach((line, index) => {
-        for (const rule of rules) {
-            try {
-                let match = line.match(rule.pattern);
-                if (match) {
-                    rule.processor(match, line);
-                    break;
-                }
-            } catch (e) {
-                throw new Error('Parse error on line ' + (index + 1) + ': ' + e.message);
-            }
-        }
-    });
-}
-
 function main(input, output) {
     let canvas = new Canvas(200, 200, 'pdf');
 
@@ -92,16 +31,17 @@ function main(input, output) {
       input: input
     });
 
+    const lines = [];
+
     rl.on('line', input => {
-        graph.parse(input.replace(/##/, '#'));
+        lines.push(input.replace(/##/, '#'));
     });
 
     rl.on('close', () => {
+        graph.parse(lines);
         graph.layout().apply();
         graph.fit();
         graph.draw();
-
-        // console.log(graph.relations);
     });
 
     graph.on('draw', () => {

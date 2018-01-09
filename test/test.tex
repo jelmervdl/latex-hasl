@@ -28,7 +28,9 @@
 	\haslgraph[width=0.5\textwidth]{argtcanfb}{
 		a: Tweety can fly
 		b: She is a bird
-		c: b supports a because assume Birds can fly
+		c: assume Birds can fly
+		d: b supports a
+		e: c supports d
 	}
 	\caption{Argument diagram for sentence with implicit major.}
 	\label{fig:argTcanFB}
@@ -38,24 +40,14 @@
 	\haslgraph[width=0.5\textwidth]{argBirds}{
 		a: Tweety can fly
 		b: Tweety is a bird
-		d: b supports a because birds can fly
+		f: Birds can fly
+		d: b supports a
+		g: f supports d
 		c: Birds have wings
-		e: c supports d
+		e: c supports g
 	}
 	\caption{Argument diagram for sentence with supported major.}
 	\label{fig:argBirds}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\haslgraph[width=\textwidth]{argsocdeadoralive}{
-		a: Socrates is dead
-		b: His heart is beating
-		c: a attacks b because assume When someone dies their heart stops beating
-		d: b attacks a because assume When someone's heart is beating they are alive
-	}
-	\caption{Argument diagram for sentence with reflexive counterclaim.}
-	\label{fig:argsocdeadoralive}
 \end{figure}
 
 \begin{figure}
@@ -71,7 +63,7 @@
 		f: Rebuttal
 		g: f attacks h
 	}
-	\caption{Toulmin's model.}
+	\caption{Toulmin's model}
 	\label{fig:argtoulmin}
 \end{figure}
 

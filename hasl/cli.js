@@ -34,7 +34,7 @@ function main(input, output) {
     const lines = [];
 
     rl.on('line', input => {
-        lines.push(input.replace(/##/, '#'));
+        lines.push(input.replace(/##/g, '#'));
     });
 
     rl.on('close', () => {

@@ -107,4 +107,29 @@
 	\caption{Pound signs are not duplicated}
 \end{figure}
 
+\begin{figure}
+	\centering
+	\haslgraph{errortest1} {
+		a: Tweety (#1) is a bird
+		b: He (#1) can fly
+		c: Henry (#2) said he (#1) is
+		1: d supports a
+		2: c supports a
+	}
+	\caption{Intentional error (d undefined variable)}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\haslgraph{errortest2} {
+		a: Tweety (#1) is a bird
+		b: He (#1) can fly
+		c: Henry (#2) said he (#1) is
+		1: d supports a
+		2: c supports a
+		d: I wont be connected
+	}
+	\caption{Intentional error (d undefined variable)}
+\end{figure}
+
 \end{document}

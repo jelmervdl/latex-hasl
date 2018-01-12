@@ -49,6 +49,19 @@ function main(input, output, format) {
     });
 };
 
+function exception(e, output, format) {
+    const canvas = new Canvas(600, 200, format);
+    const ctx = canvas.getContext('2d');
+    
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#f00';
+    
+    ctx.fillText(e.toString(), 0, 0);
+    ctx.fillText(e.stack, 0, 20);
+    
+    fs.writeFileSync(output, canvas.toBuffer());
+}
+
 function usage(name) {
     console.log('Usage: haslgraph [-o <output>] <file>');
     process.exit(0);
@@ -59,6 +72,8 @@ let output = 'out.{}';
 let format = 'pdf';
 
 let input = process.stdin;
+
+let exceptionAsOutput = false;
 
 for (var i = 2; i < process.argv.length; ++i) {
     switch (process.argv[i]) {
@@ -83,6 +98,10 @@ for (var i = 2; i < process.argv.length; ++i) {
             usage(process.argv[0]);
             break;
 
+        case '--output-on-error':
+            exceptionAsOutput = true;
+            break;
+
         case '--':
             input = process.stdin;
             break;
@@ -95,4 +114,11 @@ for (var i = 2; i < process.argv.length; ++i) {
             break;
     }
 }
+try {
     main(input, output.replace(/\{\}/, format), format);
+} catch (e) {
+    if (exceptionAsOutput)
+        exception(e, output, format);
+    
+    throw e;
+}

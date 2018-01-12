@@ -22,10 +22,10 @@ console.log = function() {
     // noop
 };
 
-function main(input, output) {
-    let canvas = new Canvas(200, 200, 'pdf');
+function main(input, output, format) {
+    const canvas = new Canvas(200, 200, format);
 
-    let graph = new Graph(canvas);
+    const graph = new Graph(canvas);
 
     const rl = readline.createInterface({
       input: input
@@ -54,7 +54,9 @@ function usage(name) {
     process.exit(0);
 }
 
-let output = 'out.pdf';
+let output = 'out.{}';
+
+let format = 'pdf';
 
 let input = process.stdin;
 
@@ -69,6 +71,11 @@ for (var i = 2; i < process.argv.length; ++i) {
             break;
 
         case '-Tpdf':
+            format = 'pdf';
+            break;
+
+        case '-Tsvg':
+            format = 'svg';
             break;
 
         case '-h':
@@ -85,5 +92,4 @@ for (var i = 2; i < process.argv.length; ++i) {
             break;
     }
 }
-
-main(input, output);
+    main(input, output.replace(/\{\}/, format), format);

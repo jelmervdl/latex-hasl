@@ -88,7 +88,10 @@ for (var i = 2; i < process.argv.length; ++i) {
             break;
 
         default:
-            input = fs.createReadStream(process.argv[i], 'utf8');
+            if (/^\-/.test(process.argv[i]))
+                throw new Error('Unknown argument ' + process.argv[i]);
+            else
+                input = fs.createReadStream(process.argv[i], 'utf8');
             break;
     }
 }

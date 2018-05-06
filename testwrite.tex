@@ -1,0 +1,31 @@
+\documentclass{minimal}
+\usepackage{environ}
+
+\newwrite\myOutput
+\makeatletter
+
+\def\my@writeToFile#1{
+  \immediate\openout\myOutput=\haslfilename.hasl%
+  \immediate\write\myOutput{#1}%
+  \immediate\closeout\myOutput%
+}
+
+\newenvironment{myCode}[2][none]{%
+    \def\haslfilename{#2}%
+    \newlinechar`\^^M%
+    \obeylines%
+    \message{Optional argument: #1}
+    \Collect@Body\my@writeToFile% %macro from the environ package
+    \message{This is not executed}%
+}{%
+    \message{Just written \haslfilename}
+}
+\makeatother
+
+\begin{document}
+\begin{myCode}[0.5\textwidth]{xoutput}
+one
+two
+three
+\end{myCode}
+\end{document}

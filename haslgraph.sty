@@ -36,32 +36,39 @@
 \ProcessOptions\relax % LaTeX class guide says it is wise to relax
 \RequirePackage{graphicx}
 \RequirePackage{verbatim}
-\newcommand{\haslgraph}[2][scale=1]{
-  \inputhaslraph[#1]{#2}{haslgraph}%       % Include the generated ps/pdf.
-  \@haslgraph{haslgraph}{#2}%           % Generate the .dot file.
+\RequirePackage{environ}
+\newenvironment{haslpicture}[2][scale=1]{%
+    \def\haslgraph@arguments{#1}%
+    \def\haslgraph@filename{#2}%
+    \newlinechar`\^^M%
+    \obeylines%
+    \Collect@Body\haslgraph@writeToFile%
+}{%
+    \message{\haslgraph@arguments}%
+    \inputhaslgraph{\haslgraph@arguments}%
 }
-\begingroup
-  \catcode`\^^M=\active%
-  \gdef\@haslgraph{\begingroup\catcode`\^^M=\active\def^^M{^^J}\@@haslgraph}%
-\endgroup
-\newwrite\haslfile%
-\def\@@haslgraph#1#2#3{%
-    \immediate\openout\haslfile=\@tmpdir#2.hasl%
-    \expandafter\def\csname -\endcsname{\string\n}%
-    \immediate\write\haslfile{#3}%
-    \immediate\closeout\haslfile%
-    \endgroup}%
-\newcommand{\inputhaslraph}[3][scale=1]{
+\newcommand{\haslgraph}[3][scale=1]{%
+  \begin{haslpicture}[#1]{#2} %
+  #3%
+  \end{haslpicture}%
+}
+\newwrite\haslgraph@file%
+\def\haslgraph@writeToFile#1{%
+  \immediate\openout\haslgraph@file=\@tmpdir\haslgraph@filename.hasl%
+  \immediate\write\haslgraph@file{#1}%
+  \immediate\closeout\haslgraph@file%
+}
+\newcommand{\inputhaslgraph}[1]{%
     % Remove output from previous runs
-    \immediate\write18{rm -f \@tmpdir#2.\@outext \@tmpdir#2.log}
+    \immediate\write18{rm -f \@tmpdir\haslgraph@filename.\@outextspace \@tmpdir\haslgraph@filename.log}%
     % execute hasl
-    \immediate\write18{#3 -T\@outextspace -o \@tmpdir#2.\@outextspace \@tmpdir#2.hasl 2> \@tmpdir#2.log}
-    \IfFileExists{\@tmpdir#2.\@outext}{ % the postscript/pdf exists: include it
-            \includegraphics[#1]{\@tmpdir#2.\@outext}
+    \immediate\write18{haslgraph -T\@outextspace -o \@tmpdir\haslgraph@filename.\@outextspace \@tmpdir\haslgraph@filename.hasl 2> \@tmpdir\haslgraph@filename.log}%
+    \IfFileExists{\@tmpdir\haslgraph@filename.\@outext}{% % the postscript/pdf exists: include it
+            \includegraphics[#1]{\@tmpdir\haslgraph@filename.\@outext}%
         }
         % else: the postscript/pdf doesn't exist: tell the user how to create it
-        {
-            \verbatiminput{\@tmpdir#2.log}
+        {%
+            \verbatiminput{\@tmpdir\haslgraph@filename.log}%
         }
 }
 \endinput

@@ -157,11 +157,11 @@ class LetterSequence {
 }
 
 
-function Graph(canvas)
+function Graph(canvas, context)
 {
 	this.canvas = canvas;
 
-	this.context = this.canvas.getContext('2d');
+	this.context = context || this.canvas.getContext('2d');
 
 	this.claims = [];
 	this.relations = [];

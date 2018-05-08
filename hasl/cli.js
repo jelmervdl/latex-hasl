@@ -18,14 +18,13 @@ require('./array.js');
 require('./layout.js')(Graph);
 require('./canvas.js')(Canvas.Context2d);
 
-console.log = function() {
-    // noop
-};
-
 function main(input, output, format) {
     const canvas = new Canvas(200, 200, format);
 
-    const graph = new Graph(canvas);
+    const ctx = canvas.getContext('2d');
+    ctx.textDrawingMode = 'glyph';
+    
+    const graph = new Graph(canvas, ctx);
 
     const rl = readline.createInterface({
       input: input
@@ -53,6 +52,7 @@ function exception(e, output, format) {
     const canvas = new Canvas(600, 200, format);
     const ctx = canvas.getContext('2d');
     
+    ctx.textDrawingMode = 'glyph';
     ctx.font = '12px sans-serif';
     ctx.fillStyle = '#f00';
     

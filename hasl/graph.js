@@ -12,6 +12,13 @@ var _requestAnimationFrame = (function() {
 	}
 })();
 
+function set(obj, path, value) {
+	const steps = path.split('.');
+	while (steps.length > 1)
+		obj = obj[steps.shift()]
+	return obj[steps[0]] = value;
+}
+
 function Claim(graph, text, data)
 {
 	this.graph = graph;
@@ -910,6 +917,16 @@ Graph.prototype = {
 				pattern: /^\s*([a-z0-9]+)\s*:\s*(assume\s+)?(.+?)\s*$/,
 				processor: match => {
 					variables[match[1]] = this.addClaim(match[3], {variable: match[1], assumption: match[2] == 'assume'});
+				}
+			},
+			{
+				pattern: /^\s*style\s+([a-z0-9]+(?:\.[a-z0-9]+)*)\s+(\d*(?:\.\d+))\s*$/,
+				processor: match => {
+					try {
+						set(this.style, match[1], parseFloat(match[2]));
+					} catch(e) {
+						console.warn('Cannot set style property ' + match[1], e);
+					}
 				}
 			}
 		];

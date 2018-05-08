@@ -2,8 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[pdf,tmpdir]{haslgraph}
 
-\begin{document}
+\pdfsuppresswarningpagegroup=1
 
+\begin{document}
 \title{HASL argument diagrams}
 \author{Jelmer van der Linde}
 \date{\today}
@@ -13,31 +14,31 @@
 \newpage
 
 \begin{figure}
-	\haslgraph[width=0.5\textwidth]{argJohn}{
+	\begin{haslpicture}[width=0.5\textwidth]{argJohn}
 		a: John is a doctor
 		b: John graduated
 		c: John finished his thesis
 		d: b supports a
 		e: c supports b
-	}
+	\end{haslpicture}
 	\caption{Argument diagram for sentence with shared claim/minor.}
 	\label{fig:argJohn}
 \end{figure}
 
 \begin{figure}
-	\haslgraph[width=0.5\textwidth]{argtcanfb}{
+	\begin{haslpicture}[width=0.5\textwidth]{argtcanfb}
 		a: Tweety can fly
 		b: She is a bird
 		c: assume Birds can fly
 		d: b supports a
 		e: c supports d
-	}
+	\end{haslpicture}
 	\caption{Argument diagram for sentence with implicit major.}
 	\label{fig:argTcanFB}
 \end{figure}
 
 \begin{figure}
-	\haslgraph[width=0.5\textwidth]{argBirds}{
+	\begin{haslpicture}[width=0.5\textwidth]{argBirds}
 		a: Tweety can fly
 		b: Tweety is a bird
 		f: Birds can fly
@@ -45,14 +46,14 @@
 		g: f supports d
 		c: Birds have wings
 		e: c supports g
-	}
+	\end{haslpicture}
 	\caption{Argument diagram for sentence with supported major.}
 	\label{fig:argBirds}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph[width=\textwidth]{argtoulmin}{
+	\begin{haslpicture}[width=\textwidth]{argtoulmin}
 		a: Claim
 		b: Datum
 		w: Warrant
@@ -62,14 +63,14 @@
 		e: d supports w
 		f: Rebuttal
 		g: f attacks h
-	}
+	\end{haslpicture}
 	\caption{Toulmin's model}
 	\label{fig:argtoulmin}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph[width=\textwidth]{rules}{
+	\begin{haslpicture}[width=\textwidth]{rules}
 		a: Tweety is a bird
 		b: Tweety can fly
 		c: Birds can fly
@@ -79,68 +80,68 @@
 		2: c supports 1
 		3: d warrants c
 		4: e undercuts 3
-	}
+	\end{haslpicture}
 	\caption{Explicit rules}
 	\label{fig:argrules}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph{rbc2r} {
+	\begin{haslpicture}{rbc2r}
 		w: Warrant
 		c1: C1
 		c2: C2
 		a: c1 c2 warrants w
-	}
+	\end{haslpicture}
 	\caption{Compound statements are no longer drawn}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph{poundsign} {
+	\begin{haslpicture}{poundsign}
 		a: Tweety (#1) is a bird
 		b: He (#1) can fly
 		c: Henry (#2) said he (#1) is
 		1: b supports a
 		2: c supports a
-	}
+	\end{haslpicture}
 	\caption{Pound signs are not duplicated}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph{errortest1} {
+	\begin{haslpicture}{errortest1}
 		a: Tweety (#1) is a bird
 		b: He (#1) can fly
 		c: Henry (#2) said he (#1) is
 		1: d supports a
 		2: c supports a
-	}
+	\end{haslpicture}
 	\caption{Intentional error (d undefined variable)}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph{errortest2} {
+	\begin{haslpicture}{errortest2}
 		a: Tweety (#1) is a bird
 		b: He (#1) can fly
 		c: Henry (#2) said he (#1) is
 		1: d supports a
 		2: c supports a
 		d: I wont be connected
-	}
+	\end{haslpicture}
 	\caption{Intentional error (d undefined variable)}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\haslgraph{wraptest} {
+	\begin{haslpicture}{wraptest}
 		a: This is a very long text about Tweety (#1) being a bird
 		b: He (#1) can fly
 		c: Henry (#2) said he (#1) is during the festival we both attended in the summer of '78 while we were still popsticles
 		1: b supports a
 		2: c supports a
-	}
+	\end{haslpicture}
 	\caption{Wrap test}
 \end{figure}
 

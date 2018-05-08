@@ -1,0 +1,33 @@
+\documentclass{minimal}
+\usepackage{environ}
+\usepackage{graphicx}
+
+\newwrite\myOutput
+\makeatletter
+
+\def\hasl@writeToFile#1{
+  \immediate\openout\myOutput=\hasl@filename.txt%
+  \immediate\write\myOutput{#1}%
+  \immediate\closeout\myOutput%
+}
+
+\newenvironment{haslpicture}[2][scale=1]{%
+  \def\hasl@filename{#2}%
+  \def\hasl@arguments{#1}%
+  \newlinechar`\^^M%
+  \obeylines%
+  \message{Optional argument: #1}
+  \Collect@Body\hasl@writeToFile% %macro from the environ package
+}{%
+  \immediate\write18{cupsfilter \hasl@filename.txt > \hasl@filename.pdf}%
+  \includegraphics[\hasl@arguments]{\hasl@filename.pdf}
+}
+\makeatother
+
+\begin{document}
+\begin{haslpicture}[0.5\textwidth]{xoutput}
+one
+two
+three
+\end{haslpicture}
+\end{document}

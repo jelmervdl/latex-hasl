@@ -40,7 +40,7 @@
 \newenvironment{haslpicture}[2][scale=1]{%
     \def\haslgraph@arguments{#1}%
     \def\haslgraph@filename{#2}%
-    \endlinechar=`\^^M%
+    \newlinechar`\^^M%
     \obeylines%
     \Collect@Body\haslgraph@writeToFile%
 }{%

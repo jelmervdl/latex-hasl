@@ -136,6 +136,7 @@
 \begin{figure}
 	\centering
 	\begin{haslpicture}{wraptest}
+		style claim.maxWidth 100
 		a: This is a very long text about Tweety (#1) being a bird
 		b: He (#1) can fly
 		c: Henry (#2) said he (#1) is during the festival we both attended in the summer of '78 while we were still popsticles
@@ -162,5 +163,24 @@
 	\caption{Too wide argument.}
 	\label{fig:hasl1evalconjunctiontort}
 \end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{haslpicture}[scale=0.5]{multiplewarrantstest}
+		a: Tweety can fly
+		b: Tweety is a bird
+		c: something can fly if something is a bird
+		d: Tweety is a squirrel
+		e: b supports a
+		f: c supports e
+		g: d attacks e
+		i: Tweety is a dog
+		h: i attacks e
+	\end{haslpicture}
+	\caption{Too wide argument.}
+	\label{fig:hasl1evalconjunctiontort}
+\end{figure}
+
+
 
 \end{document}

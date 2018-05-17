@@ -1025,7 +1025,6 @@ class Graph {
 			}
 
 			const s = this.offsetPosition(target, source);
-
 			const t = this.offsetPosition(source, target);
 
 			const color = this.style.relation.color(relation);
@@ -1182,7 +1181,7 @@ class Graph {
 
 		const rules = [
 			{
-				pattern: /^\s*([a-z0-9]+)\s*:\s*(assume\s+)?((?:[a-z0-9]+\s+)+)(?:(support|attack|warrant|undercut)s)\s+([a-z0-9]+)$/,
+				pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?((?:[a-z0-9]+\s+)+)(?:(support|attack|warrant|undercut)s)\s+([a-z0-9]+)$/,
 				processor: match => {
 					let sources = match[3].split(/\s+/).filter(name => name != '').map(name => {
 						if (!(name in variables))
@@ -1195,13 +1194,13 @@ class Graph {
 				}
 			},
 			{
-				pattern: /^\s*([a-z0-9]+)\s*:\s*(assume\s+)?(.+?)\s*$/,
+				pattern: /^\s*([a-z0-9]+)\s*:\s*(?:(assume)\s+)?(.+?)\s*$/,
 				processor: match => {
 					variables[match[1]] = this.addClaim(match[3], {variable: match[1], assumption: match[2] == 'assume'});
 				}
 			},
 			{
-				pattern: /^\s*style\s+([a-z0-9]+(?:\.[a-z0-9]+)*)\s+(\d*(?:\.\d+))\s*$/,
+				pattern: /^\s*style\s+([a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*)\s+(\d*(?:\.\d+)?)\s*$/,
 				processor: match => {
 					try {
 						set(this.style, match[1], parseFloat(match[2]));
@@ -1212,18 +1211,18 @@ class Graph {
 			}
 		];
 
-		lines.forEach((line, index) => {
+		lines.filter(line => line.trim() !== '').forEach((line, index) => {
 			for (const rule of rules) {
 				try {
 					let match = line.match(rule.pattern);
-					if (match) {
-						rule.processor(match, line);
-						break;
-					}
+					if (match)
+						return rule.processor(match, line);
 				} catch (e) {
 					throw new Error('Parse error on line ' + (index + 1) + ': ' + e.message);
 				}
 			}
+
+			throw new Error('Parse error on line ' + (index + 1) + ': unknown instruction "' + line + '"');
 		});
 	}
 

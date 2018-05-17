@@ -16,8 +16,13 @@ var _requestAnimationFrame = (function() {
 
 function set(obj, path, value) {
 	const steps = path.split('.');
-	while (steps.length > 1)
-		obj = obj[steps.shift()]
+	while (steps.length > 1) {
+		const step = steps.shift();
+		if (step in obj)
+			obj = obj[step]
+		else
+			throw new Error('object has no property ' + step);
+	}
 	return obj[steps[0]] = value;
 }
 

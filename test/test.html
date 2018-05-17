@@ -106,6 +106,32 @@
 				const o = graph.addRelation([g], e, 'attack');
 				const p = graph.addRelation([a], h, 'support');
 				const q = graph.addRelation([c], j, 'support');
+			},
+			graph => {
+				const claim = graph.addClaim('Claim');
+				const datum_1 = graph.addClaim('Datum 1');
+				const datum_2 = graph.addClaim('Datum 2');
+				const warrant = graph.addClaim('Warrant');
+				const condition1 = graph.addClaim('Condition 1');
+				const condition2 = graph.addClaim('Condition 2');
+				const support = graph.addRelation([datum_1, datum_2], claim, 'support');
+				graph.addRelation([warrant], support, 'support');
+				graph.addRelation([condition1, condition2], warrant, 'warrant');
+			},
+			graph => {
+				graph.parse([
+					"a: Tweety can fly",
+					"b: Tweety is a bird",
+					"c: Things can fly",
+					"d: They are birds",
+					"e: They are penguins",
+					"f: They are ostriches",
+					"g: b supports a",
+					"h: d warrants c",
+					"i: e undercuts h",
+					"j: f undercuts h",
+					"k: c supports g",
+				]);
 			}
 		];
 
@@ -127,7 +153,7 @@
 			const layout = graph.layout();
 			layout.apply();
 
-			graph.on('draw', (graph) => layout.drawOutline(graph));
+			graph.on('draw', () => layout.drawOutline(graph));
 		});
 		</script>
 	</body>

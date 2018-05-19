@@ -38,7 +38,8 @@ function main(input, output, format) {
 
     rl.on('close', () => {
         graph.parse(lines);
-        graph.layout().apply();
+        if (graph.claims.every(claim => claim.x === 0 && claim.y === 0))
+            graph.layout().apply();
         graph.fit();
         graph.draw();
     });

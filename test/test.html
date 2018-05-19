@@ -132,6 +132,32 @@
 					"j: f undercuts h",
 					"k: c supports g",
 				]);
+			},
+			graph => {
+				graph.parse([
+					"a: Tweety can fly",
+					"b: something can fly if something is a bird",
+					"c: assume Tweety is a bird",
+					"d: Tweety is a penguin",
+					"e: c supports a",
+					"f: d attacks a",
+					"g: b supports e",
+				]);
+			},
+			graph => {
+				graph.parse([
+					"a: Tweety can fly",
+					"b: something can fly if something is a bird",
+					"c: assume Tweety is a bird",
+					"d: Tweety is a penguin",
+					"e: c supports a",
+					"f: d attacks a",
+					"g: b supports e",
+					"position a at 240 20",
+					"position b at -20 90",
+					"position c at 170 160",
+					"position d at 300 160",
+				]);
 			}
 		];
 
@@ -148,12 +174,16 @@
 			const graph = new Graph(canvas);
 			example(graph);
 
-			caption.textContent = graph.toString();
-
 			const layout = graph.layout();
-			layout.apply();
+			
+			// Only apply layout if there is no layout yet
+			if (graph.claims.every(claim => claim.x === 0 && claim.y === 0))
+				layout.apply();
 
-			graph.on('draw', () => layout.drawOutline(graph));
+			graph.on('draw', () => {
+				layout.drawOutline(graph);
+				caption.textContent = graph.toString();
+			});
 		});
 		</script>
 	</body>

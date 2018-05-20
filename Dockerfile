@@ -25,6 +25,7 @@ RUN /bin/dnf install -y gcc-c++ python \
 RUN /bin/dnf install -y \
 	texlive-tikz-qtree \
 	texlive-pict2e \
+	texlive-appendix \
 	&& /bin/dnf clean all
 
 COPY hasl/*.js /opt/hasl/

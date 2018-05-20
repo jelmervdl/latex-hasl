@@ -26,6 +26,7 @@ RUN /bin/dnf install -y \
 	texlive-tikz-qtree \
 	texlive-pict2e \
 	texlive-appendix \
+	texlive-adjustbox \
 	&& /bin/dnf clean all
 
 COPY hasl/*.js /opt/hasl/

@@ -11,7 +11,7 @@ y = c supports x
 const fs = require('fs');
 const readline = require('readline');
 const Canvas = require('canvas');
-const {Graph} = require('./graph.js');
+const {Graph, Bounds} = require('./graph.js');
 
 // These add methods to prototypes. Quite ugly in this modular design...
 require('./array.js');
@@ -40,6 +40,15 @@ function main(input, output, format) {
         graph.parse(lines);
         if (graph.claims.every(claim => claim.x === 0 && claim.y === 0))
             graph.layout().apply();
+        else {
+            graph.updateClaimSizes();
+            graph.claims.filter(claim => claim.data.compound).forEach(claim => {
+                const bounds = graph.findRelations({target: claim})
+                    .map(relation => relation.claim)
+                    .reduce((bounds, claim) => bounds.including(claim), new Bounds());
+                claim.setPosition(bounds.center.x, bounds.y - 40);
+            });
+        }
         graph.fit();
         graph.draw();
     });

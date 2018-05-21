@@ -181,6 +181,27 @@
 	\label{fig:hasl1evalconjunctiontort}
 \end{figure}
 
-
+\begin{figure}[h]
+	\centering
+	\begin{haslpicture}[scale=0.5]{manualpositioning}
+		a: assume something can fly if something is a bird and something has wings
+		b: Tweety can fly
+		c: Tweety is a bird
+		d: assume something has wings if something is a duck
+		e: Tweety has wings
+		f: Tweety is a duck
+		g: f supports e
+		h: c e supports b
+		i: d supports g
+		j: a supports h
+		position a at 415 70
+		position b at 334 1
+		position c at 236 195
+		position d at 480 264
+		position e at 389 195
+		position f at 392 333
+	\end{haslpicture}
+	\caption{Manual positioning including compound claims}
+\end{figure}
 
 \end{document}
